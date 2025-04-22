@@ -1,4 +1,5 @@
 extends Button
 
 func _pressed():
-	Global.exit()
+	print("Exit button pressed. Quitting game.") # Сообщение для отладки
+	get_tree().quit()

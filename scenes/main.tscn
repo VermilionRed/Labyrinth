@@ -1,7 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://db44kr4kpqtop"]
+[gd_scene load_steps=19 format=3 uid="uid://db44kr4kpqtop"]
 
 [ext_resource type="PackedScene" uid="uid://b17mptkixgtjv" path="res://scenes/player.tscn" id="1_acmfb"]
 [ext_resource type="PackedScene" uid="uid://c2ok1c8h0rimy" path="res://scenes/hud.tscn" id="2_dmm66"]
+[ext_resource type="Texture2D" uid="uid://cnmqbyttibu7r" path="res://textures/mossy_brick_diff_1k.png" id="3_kdnju"]
+[ext_resource type="Texture2D" uid="uid://ml4un870thns" path="res://textures/mossy_brick_nor_gl_1k.png" id="4_e715n"]
+[ext_resource type="Texture2D" uid="uid://c6b2p2gbh55rx" path="res://textures/mossy_brick_rough_1k.png" id="5_gd6kx"]
+[ext_resource type="Texture2D" uid="uid://cp5kv4dtjh833" path="res://textures/brown_mud_leaves_01_diff_1k.png" id="6_axqe0"]
+[ext_resource type="Texture2D" uid="uid://ctfgpxkcnpsrb" path="res://textures/brown_mud_leaves_01_nor_gl_1k.png" id="7_w3qxr"]
+[ext_resource type="Texture2D" uid="uid://pgkefhmkefrg" path="res://textures/brown_mud_leaves_01_rough_1k.png" id="8_ef8r0"]
+[ext_resource type="PackedScene" uid="uid://cm7sxf3eyhjff" path="res://scenes/coin.tscn" id="9_guen1"]
+[ext_resource type="PackedScene" uid="uid://c1aapb13i14h2" path="res://scenes/door.tscn" id="10_knif5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mssrm"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -16,28 +24,50 @@ sky = SubResource("Sky_75gok")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_4s3i8"]
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_c88hy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s3tbt"]
+albedo_texture = ExtResource("3_kdnju")
+roughness_texture = ExtResource("5_gd6kx")
+normal_enabled = true
+normal_texture = ExtResource("4_e715n")
+uv1_scale = Vector3(30, 30, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ag137"]
+material = SubResource("StandardMaterial3D_s3tbt")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m8ofs"]
+albedo_texture = ExtResource("6_axqe0")
+roughness_texture = ExtResource("8_ef8r0")
+normal_enabled = true
+normal_texture = ExtResource("7_w3qxr")
+uv1_scale = Vector3(2, 2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4s3i8"]
+material = SubResource("StandardMaterial3D_m8ofs")
 
 [node name="Main" type="Node3D"]
 
+[node name="hud" parent="." instance=ExtResource("2_dmm66")]
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.702193, -0.63534, -0.321353, 0.49987, -0.761327, 0.41293, -0.507005, 0.129322, 0.852186, -0.469589, 7.65299, -0.0710964)
-visible = false
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_u8les")
 
+[node name="Player" parent="." instance=ExtResource("1_acmfb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.158552, 1.5, 0)
+
 [node name="floor" type="StaticBody3D" parent="."]
 transform = Transform3D(45, 0, 0, 0, 1, 0, 0, 0, 45, 0, 0, -9.53674e-07)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="floor"]
-mesh = SubResource("BoxMesh_4s3i8")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="floor"]
 shape = SubResource("BoxShape3D_c88hy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="floor"]
+mesh = SubResource("BoxMesh_ag137")
 
 [node name="right_wall" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 3, 0, 0, 0, 29, -14.9943, 1.98963, -0.0303783)
@@ -58,12 +88,25 @@ mesh = SubResource("BoxMesh_4s3i8")
 shape = SubResource("BoxShape3D_c88hy")
 
 [node name="down_wall" type="StaticBody3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, -31, 0, 3, 0, 1, 0, -1.35505e-06, 0, 2, -15)
+transform = Transform3D(-4.37114e-08, 0, -16.57, 0, 3, 0, 1, 0, -7.24298e-07, -7.08, 2, -15)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="down_wall"]
+transform = Transform3D(1, 0, 5.68434e-14, 0, 1, 0, 0, 0, 1, 0, 0, -0.0234925)
 mesh = SubResource("BoxMesh_4s3i8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="down_wall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -1.77636e-15, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_c88hy")
+
+[node name="down_wall2" type="StaticBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -11.665, 0, 3, 0, 1, 0, -5.09893e-07, 9.62943, 2, -15)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="down_wall2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 4.44089e-16, 0, 1, 0, 0, 0.0294596)
+mesh = SubResource("BoxMesh_4s3i8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="down_wall2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -1.77636e-15, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_c88hy")
 
 [node name="left_wall" type="StaticBody3D" parent="."]
@@ -444,7 +487,44 @@ mesh = SubResource("BoxMesh_4s3i8")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="wall9"]
 shape = SubResource("BoxShape3D_c88hy")
 
-[node name="Player" parent="." instance=ExtResource("1_acmfb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.158552, 1.5, 0)
+[node name="Coin" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.431645, 1.53584, -6.08629)
 
-[node name="hud" parent="." instance=ExtResource("2_dmm66")]
+[node name="Coin2" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.90374, 1.53584, -12.9665)
+
+[node name="Coin3" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.68546, 1.53584, -10.2335)
+
+[node name="Coin4" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.83193, 1.53584, -13.0166)
+
+[node name="Coin5" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.2345, 1.53584, -4.96315)
+
+[node name="Coin6" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.01489, 1.53584, -1.9233)
+
+[node name="Coin7" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.41908, 1.53584, 4.53974)
+
+[node name="Coin8" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.41908, 1.53584, 8.05986)
+
+[node name="Coin9" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4072, 1.53584, 4.40565)
+
+[node name="Coin10" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.24442, 1.53584, 9.55619)
+
+[node name="Coin11" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.57643, 1.53584, 12.3897)
+
+[node name="Coin12" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0259, 1.53584, 0.619311)
+
+[node name="Coin13" parent="." instance=ExtResource("9_guen1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.66303, 1.53584, -6.46402)
+
+[node name="Door" parent="." instance=ExtResource("10_knif5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.55176, 1.95588, -14.9402)

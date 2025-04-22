@@ -5,8 +5,9 @@ var SPEED = 3.0
 var SPRINT_SPEED = 7.0
 const JUMP_VELOCITY = 4.5
 
-func _ready():
+func _ready() -> void:
 	ORIGINAL_SPEED = SPEED
+	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -33,3 +34,11 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+
+
+func _on_attract_collectables_area_area_entered(area: Area3D) -> void:
+	if area is Collectable:
+		if not area.isCollected:
+			print("Coin detected! Adding score.") # Для отладки
+			Global.add_score(1) # Добавляем 1 очко (или другое значение, если нужно)
+			area.isCollected = true

@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cm7sxf3eyhjff"]
+
+[ext_resource type="Script" path="res://scripts/coin.gd" id="1_l87vm"]
+[ext_resource type="PackedScene" uid="uid://b5w3wgvuikqjd" path="res://addons/collectable/coin/coin.fbx" id="1_lv48m"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pex70"]
+radius = 0.34242
+
+[node name="Coin" type="Area3D"]
+script = ExtResource("1_l87vm")
+
+[node name="coin" parent="." instance=ExtResource("1_lv48m")]
+transform = Transform3D(30, 0, 0, 0, -1.31134e-06, -30, 0, 30, -1.31134e-06, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_pex70")
